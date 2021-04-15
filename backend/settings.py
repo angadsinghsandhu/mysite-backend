@@ -1,5 +1,5 @@
 """
-Django settings for {{ project_name }} project on Heroku. For more info, see:
+Django settings for backend project on Heroku. For more info, see:
 https://github.com/heroku/heroku-django-template
 
 For more information on this file, see
@@ -22,7 +22,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "{{ secret_key }}"
+SECRET_KEY = "key1234"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,7 +40,58 @@ INSTALLED_APPS = [
     # http://whitenoise.evans.io/en/stable/django.html#using-whitenoise-in-development
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+
+    # External Apps
+    'rest_framework',
+
+    # Created Apps
+    'home',
 ]
+
+# setting token auth
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+# setting timezone
+# TIME_ZONE = 'Asia/Kolkata'
+
+# # setting custom user
+# AUTH_USER_MODEL = 'authentication.Account'
+
+# # setting ASGI application i.e. Channels messaging
+# ASGI_APPLICATION = 'AppBackend.routing.application'
+
+# # setting up in-memory channel layers
+# # FIXME (Convert this to redis server)
+# # # Development
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels.layers.InMemoryChannelLayer"
+#     }
+# }
+
+# Production
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "asgi_redis.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+#         },
+#         "ROUTING": "AppBackend.routing.channel_routing",
+#     },
+# }
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("localhost", 6379)],
+#         },
+#     },
+# }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -53,12 +104,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = '{{ project_name }}.urls'
+ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(PROJECT_ROOT, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -72,7 +123,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
+WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 # Database
